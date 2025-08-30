@@ -5,10 +5,17 @@ public class PlayerCollision : MonoBehaviour
     public PlayerController controller;
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == "Obstacle")
+        if (collision.collider.tag == "Car")
         {
-            controller.enabled = false;
-            GameManager.instance.EndGame();
+            if (controller.isDead == true)
+                return;
+
+            controller.Die();
+
+            if (controller.lives <= 0)
+                GameManager.instance.EndGame();
+            else
+                GameManager.instance.StartCoroutine(GameManager.instance.Respawn());  
         }
     }
 }

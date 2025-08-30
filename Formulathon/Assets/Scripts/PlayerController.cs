@@ -4,22 +4,17 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
 
-    public float forwardForce = 2000f;
     public float strafeForce = 500f;
     public float turnSpeed = 100f;
     public float turnAngle = 45f;
-    public float minumumSpeed = 25f;
-    public float brakingForce = 10f;
+
+    public int lives = 3;
+    public bool isDead = false;
+
+    public ParticleSystem explosion;
 
     void FixedUpdate()
     {
-        /*rb.AddForce(0, 0, forwardForce * Time.deltaTime);
-        if (Input.GetKey("space")) //braking
-        {
-            if (rb.linearVelocity.z > minumumSpeed)
-                rb.AddForce(0, 0, -rb.linearVelocity.z * brakingForce, ForceMode.Acceleration);
-        }*/
-
         int direction = 0;
         if (Input.GetKey("d")) direction = 1;
         if (Input.GetKey("a")) direction = -1; //cant use get axis since for whatever reason it makes the car less responsive
@@ -39,7 +34,22 @@ public class PlayerController : MonoBehaviour
         // end game if the player falls off
         if (rb.position.y <= -3)
         {
+            explosion.Play();
             GameManager.instance.EndGame();
         }
+    }
+
+    public void Die()
+    {
+        explosion.Play();
+        enabled = false;
+        isDead = true;
+        lives -= 1;
+    }
+
+    public void Respawn()
+    {
+        enabled = true;
+        isDead = false;
     }
 }
