@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        Invoke("StartGame", restartDelay);
+        //Invoke("StartGame", restartDelay);
     }
 
     public void FixedUpdate()

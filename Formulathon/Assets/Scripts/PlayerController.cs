@@ -13,6 +13,11 @@ public class PlayerController : MonoBehaviour
 
     public ParticleSystem explosion;
 
+    private void Start()
+    {
+        enabled = false;
+    }
+
     void FixedUpdate()
     {
         int direction = 0;
