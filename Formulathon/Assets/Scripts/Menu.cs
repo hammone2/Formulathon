@@ -7,11 +7,14 @@ public class Menu : MonoBehaviour
     [SerializeField] private SkinManager showCarSkinManager;
     [SerializeField] private SkinManager playerSkinManager;
 
+    [SerializeField] private GameObject titleScreen;
+    [SerializeField] private GameObject HUD;
+
     public void StartGame()
     {
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-
-        //make UI disappear
+        titleScreen.SetActive(false);
+        HUD.SetActive(true);
+        GameManager.instance.playerCam.state = FollowPlayer.CameraState.Cinematic;
     }
 
     public void ChooseColor(string color)

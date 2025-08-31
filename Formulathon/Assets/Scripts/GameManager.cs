@@ -26,15 +26,11 @@ public class GameManager : MonoBehaviour
     public float worldSpeedACC = 45f;
 
     public PlayerController player;
+    public FollowPlayer playerCam;
 
     private void Awake()
     {
         instance = this;
-    }
-
-    public void Start()
-    {
-        //Invoke("StartGame", restartDelay);
     }
 
     public void FixedUpdate()
@@ -92,10 +88,17 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public IEnumerator StartSequence()
+    {
+        yield return new WaitForSeconds(3f);
+        StartGame();
+    }
+
     public void StartGame()
     {
         SpawnCars();
         StartCoroutine(Accelerate());
+        player.enabled = true;
     }
 
     public void EndGame()
