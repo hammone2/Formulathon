@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public float restartDelay = 1f;
-    public GameObject completeLevelUI;
+    public GameObject gameOverUI;
     public Transform roadSpawner;
     public Transform roadSpawnSignal;
     public Transform trackObjectPool;
@@ -22,8 +22,11 @@ public class GameManager : MonoBehaviour
 
     public float worldSpeedMAX = 75f;
     public float worldSpeedCURRENT = 0f;
-
     public float worldSpeedACC = 45f;
+
+    [SerializeField] private float startCountdownTime = 3f;
+    [SerializeField] private AudioSource countDownSFX;
+    [SerializeField] private AudioSource raceMusic;
 
     public PlayerController player;
     public FollowPlayer playerCam;
@@ -46,13 +49,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void CompleteLevel()
+    public void GameOver()
     {
-        completeLevelUI.SetActive(true);
+        gameOverUI.SetActive(true);
     }
 
     public IEnumerator Respawn()
     {
+        raceMusic.Pause();
+
         while (worldSpeedCURRENT != 0f)
         {
             worldSpeedCURRENT = Mathf.MoveTowards(worldSpeedCURRENT, 0f, worldSpeedACC * Time.deltaTime);
@@ -75,6 +80,7 @@ public class GameManager : MonoBehaviour
     {
         player.Respawn();
         StartCoroutine(Accelerate());
+        raceMusic.UnPause();
     }
 
     private IEnumerator Accelerate()
@@ -88,17 +94,17 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public IEnumerator StartSequence()
-    {
-        yield return new WaitForSeconds(3f);
-        StartGame();
-    }
-
     public void StartGame()
+    {
+        countDownSFX.Play();
+        Invoke("StartRace", startCountdownTime);
+    }
+    private void StartRace()
     {
         SpawnCars();
         StartCoroutine(Accelerate());
         player.enabled = true;
+        raceMusic.Play();
     }
 
     public void EndGame()
@@ -107,11 +113,14 @@ public class GameManager : MonoBehaviour
         {
             gameOver = true;
             Debug.Log("GAME OVER!");
-            Invoke("Restart", restartDelay);
+            raceMusic.Stop();
+
+            Invoke("GameOver", 1.5f);
+            //Invoke("Restart", restartDelay);
         }
     }
 
-    void Restart()
+    public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private AudioSource explosionSFX;
 
     public float strafeForce = 500f;
     public float turnSpeed = 100f;
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         explosion.Play();
+        explosionSFX.Play();
         enabled = false;
         isDead = true;
         lives -= 1;

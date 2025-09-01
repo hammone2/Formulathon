@@ -67,7 +67,7 @@ public class FollowPlayer : MonoBehaviour
                 else
                 {
                     state = CameraState.Gameplay;
-                    GameManager.instance.StartCoroutine(GameManager.instance.StartSequence());
+                    GameManager.instance.StartGame();
                 }
 
                     break;

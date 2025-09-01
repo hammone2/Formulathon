@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 { 
@@ -10,11 +9,18 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject titleScreen;
     [SerializeField] private GameObject HUD;
 
+    [SerializeField] private AudioSource selectSFX;
+    [SerializeField] private AudioSource startSFX;
+    [SerializeField] private AudioSource menuMusic;
+
     public void StartGame()
     {
         titleScreen.SetActive(false);
         HUD.SetActive(true);
         GameManager.instance.playerCam.state = FollowPlayer.CameraState.Cinematic;
+
+        menuMusic.Stop();
+        startSFX.Play();
     }
 
     public void ChooseColor(string color)
@@ -22,5 +28,7 @@ public class Menu : MonoBehaviour
         showCarSkinManager.ChooseSkin(color);
         playerSkinManager.ChooseSkin(color);
         //change life icon to match skin
+
+        selectSFX.Play();
     }
 }
