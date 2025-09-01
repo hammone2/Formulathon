@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public float restartDelay = 1f;
     public GameObject gameOverUI;
+    public CountdownUI countdownUI;
     public Transform roadSpawner;
     public Transform roadSpawnSignal;
     public Transform trackObjectPool;
@@ -98,6 +99,8 @@ public class GameManager : MonoBehaviour
     {
         countDownSFX.Play();
         Invoke("StartRace", startCountdownTime);
+        countdownUI.gameObject.SetActive(true);
+        countdownUI.StartCoroutine(countdownUI.CountdownRoutine(startCountdownTime));
     }
     private void StartRace()
     {
