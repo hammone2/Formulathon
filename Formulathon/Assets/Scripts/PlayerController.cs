@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private AudioSource explosionSFX;
+    [SerializeField] private Lives livesCounter;
 
     public float strafeForce = 500f;
     public float turnSpeed = 100f;
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
         enabled = false;
         isDead = true;
         lives -= 1;
+        livesCounter.UpdateLivesCounter();
     }
 
     public void Respawn()

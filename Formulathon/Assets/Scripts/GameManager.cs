@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public float restartDelay = 1f;
     public GameObject gameOverUI;
+    public GameObject HUD;
     public CountdownUI countdownUI;
     public Transform roadSpawner;
     public Transform roadSpawnSignal;
@@ -107,6 +108,7 @@ public class GameManager : MonoBehaviour
         SpawnCars();
         StartCoroutine(Accelerate());
         player.enabled = true;
+        HUD.SetActive(true);
         raceMusic.Play();
     }
 

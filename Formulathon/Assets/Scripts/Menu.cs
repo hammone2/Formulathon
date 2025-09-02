@@ -5,6 +5,7 @@ public class Menu : MonoBehaviour
 
     [SerializeField] private SkinManager showCarSkinManager;
     [SerializeField] private SkinManager playerSkinManager;
+    [SerializeField] private Lives livesIcon;
 
     [SerializeField] private GameObject titleScreen;
     [SerializeField] private GameObject HUD;
@@ -16,7 +17,7 @@ public class Menu : MonoBehaviour
     public void StartGame()
     {
         titleScreen.SetActive(false);
-        HUD.SetActive(true);
+        //HUD.SetActive(true);
         GameManager.instance.playerCam.state = FollowPlayer.CameraState.Cinematic;
 
         menuMusic.Stop();
@@ -27,6 +28,7 @@ public class Menu : MonoBehaviour
     {
         showCarSkinManager.ChooseSkin(color);
         playerSkinManager.ChooseSkin(color);
+        livesIcon.SelectColor(color);
         //change life icon to match skin
 
         selectSFX.Play();
