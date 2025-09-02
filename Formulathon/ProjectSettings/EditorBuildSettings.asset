@@ -6,14 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
-    guid: 43d67774c51a128458ad656d8aed3b94
-  - enabled: 1
     path: Assets/Scenes/InfiniteLevel.unity
     guid: 1ee582d93d41e854196631741cca4a20
-  - enabled: 1
-    path: Assets/Scenes/EndScene.unity
-    guid: 7d3a63193b55ad248b8677ced08e2708
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
