@@ -7,6 +7,9 @@ public class Despawner : MonoBehaviour
         GameObject obj = collision.gameObject;
         if (obj.tag == "Track")
         {
+            if (obj.name == "Start")
+                Destroy(obj);
+
             obj.transform.parent = GameManager.instance.trackObjectPool;
             obj.transform.position = GameManager.instance.trackObjectPool.position;
             obj.SetActive(false);
