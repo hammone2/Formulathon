@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
     private void Replay()
     {
         player.enabled = true;
+        player.SetReplayStartPos(inputHandler.GetReplayStartPosition(), inputHandler.GetReplayStartRotation());
         inputHandler.StartReplay();
         replayUI.SetActive(true);
     }

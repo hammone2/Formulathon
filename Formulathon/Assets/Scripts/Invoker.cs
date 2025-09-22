@@ -10,6 +10,8 @@ public class Invoker : MonoBehaviour
     private float _recordingTime;
     private float _maxRecordingTime = 3f;
     private SortedList<float, Command> _recordedCommands = new SortedList<float, Command>();
+    private SortedList<float, Vector3> _positions = new SortedList<float, Vector3>();
+    private SortedList<float, Quaternion> _rotations = new SortedList<float, Quaternion>();
 
     public void ExecuteCommand(Command command)
     {
@@ -22,6 +24,8 @@ public class Invoker : MonoBehaviour
             {
                 // If the key does not exist, add the command to the list
                 _recordedCommands.Add(_recordingTime, command);
+                _positions.Add(_recordingTime, GameManager.instance.player.transform.position);
+                _rotations.Add(_recordingTime, GameManager.instance.player.transform.rotation);
             }
             else
             {
@@ -29,16 +33,14 @@ public class Invoker : MonoBehaviour
                 _recordedCommands[_recordingTime] = command;
             }
 
-
-            float timeThreshold = _recordingTime - _maxRecordingTime;
-
             // Find keys to remove (older than the time threshold)
+            float timeThreshold = _recordingTime - _maxRecordingTime;
             var keysToRemove = _recordedCommands.Keys.Where(k => k < timeThreshold).ToList();
-
-            // Remove the outdated commands
             foreach (var key in keysToRemove)
             {
                 _recordedCommands.Remove(key);
+                _positions.Remove(key);
+                _rotations.Remove(key);
             }
         }
             
@@ -55,13 +57,37 @@ public class Invoker : MonoBehaviour
 
     public void Replay()
     {
-        _replayTime = _recordingTime - _maxRecordingTime; //0.0f;
+        _replayTime = _recordingTime - _maxRecordingTime;
         _isReplaying = true;
 
         if (_recordedCommands.Count <= 0)
             Debug.LogError("No commands to replay!");
+    }
 
-        //_recordedCommands.Reverse();
+    public Vector3 GetReplayStartPosition()
+    {
+        if (_positions.Any())
+        {
+            if (_replayTime >= _positions.Keys[0])
+            {
+                return _positions.Values[0];
+            }
+        }
+
+        return Vector3.zero;
+    }
+
+    public Quaternion GetReplayStartRotation()
+    {
+        if (_rotations.Any())
+        {
+            if (_replayTime >= _rotations.Keys[0])
+            {
+                return _rotations.Values[0];
+            }
+        }
+
+        return Quaternion.identity;
     }
 
     void FixedUpdate()
@@ -78,7 +104,7 @@ public class Invoker : MonoBehaviour
 
             if (_recordedCommands.Any())
             {
-                if (_replayTime >= _recordedCommands.Keys[0]) //(Mathf.Approximately(_replayTime, _recordedCommands.Keys[0]))
+                if (_replayTime >= _recordedCommands.Keys[0])
                 {
 
                     Debug.Log("Replay Time: " + _replayTime);

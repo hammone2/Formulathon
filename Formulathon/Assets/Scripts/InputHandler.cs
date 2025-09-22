@@ -52,4 +52,14 @@ public class InputHandler : MonoBehaviour
         _isRecording = false;
         _invoker.Replay();
     }
+
+    public Vector3 GetReplayStartPosition()
+    {
+        return _invoker.GetReplayStartPosition();
+    }
+
+    public Quaternion GetReplayStartRotation()
+    {
+        return _invoker.GetReplayStartRotation();
+    }
 }
