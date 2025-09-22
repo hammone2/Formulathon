@@ -10,6 +10,15 @@ public class PlayerController : MonoBehaviour
     public float turnSpeed = 100f;
     public float turnAngle = 45f;
 
+    public enum Direction
+    {
+        Left = -1,
+        Right = 1,
+        Straight = 0
+    }
+    private int currentDirection = 0;
+
+
     public int lives = 3;
     public bool isDead = false;
 
@@ -22,14 +31,14 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        int direction = 0;
+        /*int direction = 0;
         if (Input.GetKey("d")) direction = 1;
-        if (Input.GetKey("a")) direction = -1; //cant use get axis since for whatever reason it makes the car less responsive
+        if (Input.GetKey("a")) direction = -1; //cant use get axis since for whatever reason it makes the car less responsive*/
 
-        if (direction != 0)
+        if (currentDirection != 0)
         {
-            rb.AddForce(direction * strafeForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
-            float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, turnAngle * direction, turnSpeed * Time.deltaTime);
+            rb.AddForce(currentDirection * strafeForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
+            float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, turnAngle * currentDirection, turnSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(transform.rotation.x, newY, transform.rotation.z);
         }
         else
@@ -46,6 +55,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Turn(Direction direction)
+    {
+        currentDirection = (int)direction;
+    }
+
     public void Die()
     {
         explosion.Play();
@@ -60,5 +74,7 @@ public class PlayerController : MonoBehaviour
     {
         enabled = true;
         isDead = false;
+        transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
     }
 }

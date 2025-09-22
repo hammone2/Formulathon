@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public float restartDelay = 1f;
     public GameObject gameOverUI;
     public GameObject HUD;
+    public GameObject replayUI;
     public CountdownUI countdownUI;
     public Transform roadSpawner;
     public Transform roadSpawnSignal;
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerController player;
     public FollowPlayer playerCam;
+    public InputHandler inputHandler;
 
     private void Awake()
     {
@@ -75,14 +77,28 @@ public class GameManager : MonoBehaviour
             car.transform.position = carPool.position;
         }
 
+        Replay();
+    }
+
+    private void Replay()
+    {
+        player.enabled = true;
+        inputHandler.StartReplay();
+        replayUI.SetActive(true);
+    }
+
+    public void StartRespawnSequence()
+    {
         Invoke("RespawnSequence", restartDelay);
     }
 
     private void RespawnSequence()
     {
         player.Respawn();
+        inputHandler.StartRecording();
         StartCoroutine(Accelerate());
         raceMusic.UnPause();
+        replayUI.SetActive(false);
     }
 
     private IEnumerator Accelerate()
@@ -93,7 +109,6 @@ public class GameManager : MonoBehaviour
             
             yield return null;
         }
-
     }
 
     public void StartGame()
@@ -110,6 +125,7 @@ public class GameManager : MonoBehaviour
         player.enabled = true;
         HUD.SetActive(true);
         raceMusic.Play();
+        inputHandler.StartRecording();
     }
 
     public void EndGame()
@@ -119,7 +135,7 @@ public class GameManager : MonoBehaviour
             gameOver = true;
             Debug.Log("GAME OVER!");
             raceMusic.Stop();
-
+            inputHandler.StopRecording();
             Invoke("GameOver", 1.5f);
             //Invoke("Restart", restartDelay);
         }
