@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3578334814406765396}
   - component: {fileID: 324113874857299192}
   - component: {fileID: 2640145330044900992}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 387774438688905245}
   explosionSFX: {fileID: 2640145330044900992}
+  livesCounter: {fileID: 0}
   strafeForce: 120
   turnSpeed: 75
   turnAngle: 45

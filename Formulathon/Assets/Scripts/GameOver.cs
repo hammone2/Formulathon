@@ -5,7 +5,7 @@ public class GameOver : MonoBehaviour
 {
     [SerializeField] private GameObject stuffToAppear;
     [SerializeField] private AudioSource gameOverMusic;
-    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private Score scoreText;
     [SerializeField] private TextMeshProUGUI finalScoreText;
 
     private void OnEnable()
@@ -17,6 +17,6 @@ public class GameOver : MonoBehaviour
     public void LoadButton()
     {
         stuffToAppear.SetActive(true);
-        finalScoreText.text = "Final Score: " + scoreText.text;
+        finalScoreText.text = "Final Score: " + scoreText.highScore.ToString("0");
     }
 }

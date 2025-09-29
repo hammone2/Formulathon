@@ -68,9 +68,19 @@ public class Lives : MonoBehaviour
         }
     }
 
-    public void UpdateLivesCounter()
+    public void UpdateLivesCounter(int livesLeft)
     {
-        GameObject lastChildObj = transform.GetChild(transform.childCount - 1).gameObject;
-        Destroy(lastChildObj.gameObject);
+        for (int i = transform.childCount; i > 0; i--)
+        {
+            GameObject icon = transform.GetChild(i - 1).gameObject;
+            if (i > livesLeft)
+            {
+                icon.SetActive(false);
+            }
+            else
+            {
+                icon.SetActive(true);
+            }
+        }
     }
 }

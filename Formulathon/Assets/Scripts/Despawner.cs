@@ -1,7 +1,22 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Despawner : MonoBehaviour
 {
+    public Pickup[] powerUps;
+
+    void Start()
+    {
+        // Subscribe to each power-up's event
+        foreach (var powerUp in powerUps)
+        {
+            if (powerUp != null)
+            {
+                powerUp.OnPickedUp += () => DespawnPowerUp(powerUp.gameObject);
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider collision)
     {
         GameObject obj = collision.gameObject;
@@ -29,5 +44,18 @@ public class Despawner : MonoBehaviour
             //obj.transform.parent = GameManager.instance.trackObjectPool;
             return;
         }
+
+        if (obj.tag == "PowerUp")
+        {
+            DespawnPowerUp(obj);
+            return;
+        }
+    }
+
+    public void DespawnPowerUp(GameObject obj)
+    {
+        obj.transform.parent = GameManager.instance.carPool;
+        obj.transform.position = GameManager.instance.carPool.position;
+        obj.SetActive(false);
     }
 }

@@ -1,6 +1,8 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ICarElement
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private AudioSource explosionSFX;
@@ -9,6 +11,8 @@ public class PlayerController : MonoBehaviour
     public float strafeForce = 500f;
     public float turnSpeed = 100f;
     public float turnAngle = 45f;
+
+    private List<ICarElement> _carElements = new List<ICarElement>();
 
     public enum Direction
     {
@@ -27,14 +31,21 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         enabled = false;
+
+        _carElements.Add(gameObject.AddComponent<InvincibilityShield>());
+        _carElements.Add(gameObject.AddComponent<BonusLife>());
+    }
+
+    public void Accept(IVisitor visitor)
+    {
+        foreach (ICarElement element in _carElements)
+        {
+            element.Accept(visitor);
+        }
     }
 
     void FixedUpdate()
     {
-        /*int direction = 0;
-        if (Input.GetKey("d")) direction = 1;
-        if (Input.GetKey("a")) direction = -1; //cant use get axis since for whatever reason it makes the car less responsive*/
-
         if (currentDirection != 0)
         {
             rb.AddForce(currentDirection * strafeForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
@@ -67,7 +78,7 @@ public class PlayerController : MonoBehaviour
         enabled = false;
         isDead = true;
         lives -= 1;
-        livesCounter.UpdateLivesCounter();
+        livesCounter.UpdateLivesCounter(lives);
     }
 
     public void Respawn()
@@ -82,5 +93,11 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = _position;
         transform.rotation = _rotation;
+    }
+
+    public void UpdateLives()
+    {
+        lives += 1;
+        livesCounter.UpdateLivesCounter(lives);
     }
 }
